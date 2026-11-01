@@ -65,4 +65,6 @@ outcomes; do not enable unattended installer chains from this branch.
 xREL metadata lookup, installed-version/prerequisite filtering, obsolete-update
 suppression, notifications and distributable packaging remain worksheet work.
 Source URLs, sanitized history and the destination remote require review
-before publication. No public fork/PR, release or deployment has occurred.
+before publication. An explicitly marked preview is being published in the user-owned fork with
+installation documentation and a tested package. No deployment or upstream PR
+is claimed.

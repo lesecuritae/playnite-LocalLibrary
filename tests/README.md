@@ -5,7 +5,13 @@ start a real game/installer or modify a Playnite library. The temporary `.exe`
 source files in discovery/link fixtures contain plain test text and are never
 executed. The test programs themselves are ordinary compiled console programs.
 
-The initial comparer fixture can be run with:
+After building the plugin, run all five suites with:
+
+```powershell
+./tests/run-all-tests.ps1
+```
+
+The initial comparer fixture can also be run separately with:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy RemoteSigned -File tests/run-comparer-tests.ps1
