@@ -25,23 +25,26 @@ publication is admitted by this worksheet alone.
    prove compatibility. Unversioned packages remain visible.
 3. Associate base installers/ISOs and updates with one game and release.
    Preserve the main installer, manual choices and alternative release bases.
-4. Run each reviewed setup with its own source directory; check each outcome,
+4. Link already installed games to their existing source entry. Reuse Playnite
+   import/scan facilities, require an explicit launch executable when uncertain,
+   preserve playtime/covers and avoid duplicate entries or reinstallation.
+5. Run each reviewed setup with its own source directory; check each outcome,
    stop dependent steps on failure, retain progress and uncertain outcomes.
    Never blindly rerun an installer after a controller crash.
-5. Correct ISO ownership/lifecycle: identify the mounted image's actual volume,
+6. Correct ISO ownership/lifecycle: identify the mounted image's actual volume,
    preserve existing mounts, wait for installation completion, unmount only
    media owned by the run. Test actual SMB and SFTP-filesystem behavior.
-6. Add cached, bounded xREL metadata lookup, including P2P results. Associate
+7. Add cached, bounded xREL metadata lookup, including P2P results. Associate
    exact releases, compare installed and available versions, suppress obsolete
    updates, show missing prerequisites and new-package notices. Distinguish
    announced, present on disk and installed. Do not acquire package payloads.
-7. Add clear source-folder onboarding and optional SSHFS instructions, reusable
+8. Add clear source-folder onboarding and optional SSHFS instructions, reusable
    packaging, tests and compatibility documentation. Review remote destination
    and sanitized history before a public fork/PR or release.
 
 ## Acceptance
 
-Independent fixtures cover numeric ordering (1.9 before 1.10), large build
+Planned acceptance includes numeric ordering (1.9 before 1.10), large build
 numbers, missing/malformed versions, deterministic ties, main-installer
 preservation, duplicate updates, Unicode paths, missing companion files,
 installer failure, interrupted processes and mounts owned by someone else.
@@ -63,6 +66,10 @@ model answer, private prompt or provider credential is skill content.
 
 Upstream base: 3aef5db6af4cd5d28c829d7aaebdae16473fdda1.
 Worksheet written. The standalone explicit-metadata version comparer now
-compiles with C#5 and passes388 independent Windows checks. It is not yet
-wired to discovery or installation. A reviewed lesson is pending native
-Dreaming; no coding-skill promotion is claimed.
+compiles with C#5 and passes 388 independent Windows checks. Update metadata
+parsing and source ordering are now wired into discovery, with existing
+actions/settings retained. A menu links an existing installation without
+reinstalling or resetting artwork/playtime. The five suites total 569 checks;
+a complete plugin build also passed. Interactive GUI, real installer chains,
+network ISO acceptance and xREL integration remain open. A reviewed lesson
+is pending native Dreaming; no coding-skill promotion is claimed.

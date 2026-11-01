@@ -3,38 +3,66 @@
 This is an isolated development branch, not a published fork or release.
 Upstream base: `3aef5db6af4cd5d28c829d7aaebdae16473fdda1`.
 
-The first component is a standalone comparer for explicit update metadata.
-It orders numeric target versions without integer overflow, publication dates
-after equal versions, and paths ordinally for deterministic ties. Missing
-versions/dates and null records have explicit ordering. It does not infer
-release compatibility, discover packages or alter installed games.
+## Implemented and checked
 
-Independent Windows acceptance compiled the helper with C#5 and passed 388
-checks. Run the same standalone acceptance from PowerShell:
+Update discovery now uses explicit numeric target-version metadata, followed
+by filesystem modification time as a fallback and deterministic path ties.
+The timestamp is not an authoritative release publication date. The bounded
+folder scanner refuses incomplete or ambiguous installer selections and does
+not follow directory reparse points. Existing actions, manual arguments,
+working directories, main installers and offline source links are retained.
+Filename hints do not prove update compatibility.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy RemoteSigned -File tests/run-comparer-tests.ps1
-```
+The Local Library game menu includes `Link existing installation...` for one
+selected game owned by this plugin. Choose the existing installation folder
+and its executable. The helper adds or reuses a launch action, marks the game
+installed, and retains its source installer, identity, playtime and artwork.
+It does not run an installer or move/delete game files. This is an explicit
+link operation; automatic cross-plugin duplicate merging is not implemented.
+Playnite's normal folder scanning and manual executable import remain useful
+for adding games which have no existing source card.
 
-The policy setting above applies to that process only. The test runner uses
-an owned temporary directory and does not install games or change networking.
-Its assertions include numeric component examples, long build identifiers,
-missing/malformed metadata, deterministic ties, culture independence,
-antisymmetry and transitivity. These are 388 checks, not 388 game installs.
+Five Windows fixture suites passed 569 assertions: comparer388, metadata124,
+discovery22, existing-installation linking23, and actual-plugin workflow12.
+The linking suite uses real Playnite SDK game/action objects. It covers
+relinking without duplicate actions, existing launch arguments, nested game
+executables, absent actions, empty/missing paths, wrong extensions, drive-root
+selection and same-prefix sibling directories. Rejected selections retain the
+existing action collection. Path containment is lexical; final filesystem
+junction identity is not established by these checks.
 
-Actual native Hermes runs through approved free NIM routes returned three
-code proposals. The first two failed the independent C#5 compilation gate.
-The supervisor produced a corrected baseline that passed388 checks. A third
-proposal from the other configured free NIM model then passed the same
-unchanged388 checks, without C# source corrections. That accepted proposal is
-the current helper. The model returned an exact-path JSON map instead of the
-requested array; the supervisor reviewed and normalized that packaging before
-compilation. This is evidence for one supervised task, not autonomous plugin
-implementation or general model quality. Failed proposals remain in private
-operator evidence and are not packaged with the extension.
+The complete Release plugin and the checked-in build recipe both built on
+Windows, targeting .NET Framework4.6.2 / MSIL. The five fixtures compile with
+C#5. See tests/README.md for inputs, commands and build prerequisites. These
+are executed assertions, not569 game installations. Discovery/link fixtures
+use text placeholder executables which are never launched.
 
-The comparer is included in the project but not yet wired to update discovery
-or installation. Full plugin build, GUI, SMB/SSHFS ISO mounting, installer
-lifecycle, xREL integration and packaging remain open worksheet stages.
-No source, build or test result here authorizes automatic installation or
-public publication. Existing Playnite integrations and theme are unchanged.
+## Supervised free-model work
+
+Native Hermes used existing configured free NIM routes without a paid
+fallback. Two Lightning code proposals failed C#5 compilation. Codex corrected
+an initial baseline. An Ultra comparer proposal then passed the same388
+checks without C# source corrections; its JSON packaging needed manual
+normalization. Two later Ultra parser proposals compiled but failed metadata
+checks. The supervisor corrected the parser and integrated discovery/linking.
+This is evidence for supervised coding tasks, not autonomous implementation
+or general model quality. Original proposals and failure receipts are private
+operator evidence and are not included in this source repository.
+
+One source/test-bound lesson was admitted to native Dreaming as pending
+review. Successful Dreaming processing and transfer into the coding skill
+have not been verified; no completed transfer is claimed.
+
+## Remaining release gates
+
+Interactive Playnite/Helium UI, database persistence/restart and actual game
+launch tests remain open. The folder/link fixtures do not establish SMB or
+mounted-SSHFS behavior on another client. Real network ISO mounting and owned
+mount cleanup remain untested. The existing installer batch workflow still
+needs replacement with reviewed per-step execution and retained uncertain
+outcomes; do not enable unattended installer chains from this branch.
+
+xREL metadata lookup, installed-version/prerequisite filtering, obsolete-update
+suppression, notifications and distributable packaging remain worksheet work.
+Source URLs, sanitized history and the destination remote require review
+before publication. No public fork/PR, release or deployment has occurred.
