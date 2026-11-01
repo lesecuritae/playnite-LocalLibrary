@@ -10,70 +10,104 @@ namespace LocalLibrary.Helpers
         public DateTime? PublishedAtUtc { get; set; }
     }
 
-    // Orders explicit metadata only; it does not establish patch compatibility.
     public sealed class UpdatePackageComparer : IComparer<UpdatePackage>
     {
         public int Compare(UpdatePackage a, UpdatePackage b)
         {
-            if (ReferenceEquals(a, b)) return 0;
-            if (a == null) return 1;
-            if (b == null) return -1;
-
-            string[] av = Parse(a.TargetVersion);
-            string[] bv = Parse(b.TargetVersion);
-            if (av != null && bv == null) return -1;
-            if (av == null && bv != null) return 1;
-            if (av != null)
+            if (ReferenceEquals(a, b))
             {
-                int versionOrder = CompareParts(av, bv);
-                if (versionOrder != 0) return versionOrder;
+                return 0;
+            }
+            if (a == null)
+            {
+                return 1;
+            }
+            if (b == null)
+            {
+                return -1;
             }
 
-            if (a.PublishedAtUtc.HasValue != b.PublishedAtUtc.HasValue)
-                return a.PublishedAtUtc.HasValue ? -1 : 1;
-            if (a.PublishedAtUtc.HasValue)
+            var va = ParseVersion(a.TargetVersion);
+            var vb = ParseVersion(b.TargetVersion);
+            bool ha = va != null;
+            bool hb = vb != null;
+
+            if (ha && !hb) return -1;
+            if (!ha && hb) return 1;
+
+            int cmp;
+            if (ha)
             {
-                int dateOrder = a.PublishedAtUtc.Value.CompareTo(b.PublishedAtUtc.Value);
-                if (dateOrder != 0) return dateOrder;
+                cmp = CompareVersions(va, vb);
+                if (cmp != 0) return cmp;
             }
 
-            string ap = a.Path ?? string.Empty;
-            string bp = b.Path ?? string.Empty;
-            int pathOrder = StringComparer.OrdinalIgnoreCase.Compare(ap, bp);
-            return pathOrder != 0 ? pathOrder : StringComparer.Ordinal.Compare(ap, bp);
+            cmp = CompareDate(a.PublishedAtUtc, b.PublishedAtUtc);
+            if (cmp != 0) return cmp;
+
+            string pa = a.Path ?? string.Empty;
+            string pb = b.Path ?? string.Empty;
+            cmp = StringComparer.OrdinalIgnoreCase.Compare(pa, pb);
+            if (cmp != 0) return cmp;
+            return StringComparer.Ordinal.Compare(pa, pb);
         }
 
-        private static string[] Parse(string text)
+        private static List<string> ParseVersion(string s)
         {
-            if (text == null) return null;
-            text = text.Trim();
-            if (text.Length > 0 && (text[0] == 'v' || text[0] == 'V'))
-                text = text.Substring(1);
-            if (text.Length == 0) return null;
-            string[] parts = text.Split('.');
-            for (int i = 0; i < parts.Length; i++)
+            if (s == null) return null;
+            string t = s.Trim();
+            if (t.Length == 0) return null;
+            if (t[0] == 'v' || t[0] == 'V')
             {
-                string part = parts[i];
+                t = t.Substring(1);
+                if (t.Length == 0) return null;
+            }
+            string[] parts = t.Split('.');
+            var list = new List<string>(parts.Length);
+            foreach (string part in parts)
+            {
                 if (part.Length == 0) return null;
-                for (int j = 0; j < part.Length; j++)
-                    if (part[j] < '0' || part[j] > '9') return null;
-                int start = 0;
-                while (start < part.Length - 1 && part[start] == '0') start++;
-                parts[i] = part.Substring(start);
+                foreach (char c in part)
+                {
+                    if (c < '0' || c > '9') return null;
+                }
+                int i = 0;
+                while (i < part.Length && part[i] == '0') i++;
+                string norm = part.Substring(i);
+                if (norm.Length == 0) norm = "0";
+                list.Add(norm);
             }
-            return parts;
+            return list;
         }
 
-        private static int CompareParts(string[] a, string[] b)
+        private static int CompareVersions(List<string> a, List<string> b)
         {
-            for (int i = 0; i < Math.Max(a.Length, b.Length); i++)
+            int max = a.Count > b.Count ? a.Count : b.Count;
+            for (int i = 0; i < max; i++)
             {
-                string ac = i < a.Length ? a[i] : "0";
-                string bc = i < b.Length ? b[i] : "0";
-                int order = ac.Length.CompareTo(bc.Length);
-                if (order == 0) order = StringComparer.Ordinal.Compare(ac, bc);
-                if (order != 0) return order;
+                string av = i < a.Count ? a[i] : "0";
+                string bv = i < b.Count ? b[i] : "0";
+                if (av.Length != bv.Length)
+                {
+                    return av.Length < bv.Length ? -1 : 1;
+                }
+                if (av != bv)
+                {
+                    return StringComparer.Ordinal.Compare(av, bv);
+                }
             }
+            return 0;
+        }
+
+        private static int CompareDate(DateTime? a, DateTime? b)
+        {
+            bool ha = a.HasValue;
+            bool hb = b.HasValue;
+            if (ha && !hb) return -1;
+            if (!ha && hb) return 1;
+            if (!ha) return 0;
+            if (a.Value < b.Value) return -1;
+            if (a.Value > b.Value) return 1;
             return 0;
         }
     }

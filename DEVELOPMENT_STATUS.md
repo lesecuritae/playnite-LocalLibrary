@@ -22,12 +22,16 @@ Its assertions include numeric component examples, long build identifiers,
 missing/malformed metadata, deterministic ties, culture independence,
 antisymmetry and transitivity. These are 388 checks, not 388 game installs.
 
-Actual native Hermes runs through an approved free NIM route returned two
-code proposals. Both failed the independent C#5 compilation gate; the
-supervisor corrected the implementation before acceptance. Therefore this
-trial demonstrates supervised proposal/review/correction, not autonomous
-model implementation success. Failed proposals remain in private operator
-evidence and are not packaged with the extension.
+Actual native Hermes runs through approved free NIM routes returned three
+code proposals. The first two failed the independent C#5 compilation gate.
+The supervisor produced a corrected baseline that passed388 checks. A third
+proposal from the other configured free NIM model then passed the same
+unchanged388 checks, without C# source corrections. That accepted proposal is
+the current helper. The model returned an exact-path JSON map instead of the
+requested array; the supervisor reviewed and normalized that packaging before
+compilation. This is evidence for one supervised task, not autonomous plugin
+implementation or general model quality. Failed proposals remain in private
+operator evidence and are not packaged with the extension.
 
 The comparer is included in the project but not yet wired to update discovery
 or installation. Full plugin build, GUI, SMB/SSHFS ISO mounting, installer

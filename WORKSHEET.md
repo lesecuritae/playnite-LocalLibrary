@@ -62,4 +62,7 @@ model answer, private prompt or provider credential is skill content.
 ## Initial status
 
 Upstream base: 3aef5db6af4cd5d28c829d7aaebdae16473fdda1.
-Worksheet written. No implementation or acceptance pass claimed yet.
+Worksheet written. The standalone explicit-metadata version comparer now
+compiles with C#5 and passes388 independent Windows checks. It is not yet
+wired to discovery or installation. A reviewed lesson is pending native
+Dreaming; no coding-skill promotion is claimed.
